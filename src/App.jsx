@@ -5,6 +5,7 @@ import Finish from "./screen/finish/Finish";
 import BiodataPage from "./screen/biodata/BiodataPage";
 import ListAll from "./screen/biodata/ListAll";
 import UpdateBiodata from "./screen/biodata/UpdateBiodata";
+import PageNotFound from "./screen/404/PageNotFound";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/biodata" element={<BiodataPage />} />
         <Route path="/list" element={<ListAll />} />
         <Route path="biodata/update" element={<UpdateBiodata />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

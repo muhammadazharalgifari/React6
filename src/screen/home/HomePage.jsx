@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div className="main-home">
       <div className="text-center z-10">
-        <h1 className="font-thin text-3xl select-none uppercase text-white">
+        <h1 className="font-thin text-3xl select-none uppercase">
           application
         </h1>
         <h1 className="font-bold text-4xl select-none uppercase">biodata</h1>

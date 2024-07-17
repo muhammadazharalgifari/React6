@@ -11,17 +11,8 @@ const Finish = () => {
         </h1>
       </div>
       <NavLink to={"/"} className={"btn-finish-back"} role="button">
-        Kembali
+        Back To Home
       </NavLink>
-      {/* <NavLink
-        to={"#"}
-        className={
-          "h-12 bg-slate-900 hover:bg-slate-950 text-white rounded-md w-[70%] flex justify-center items-center absolute bottom-6 mb-14 z-10"
-        }
-        role="button"
-      >
-        Biodata
-      </NavLink> */}
       <div className="bg-base-finish"></div>
     </div>
   );

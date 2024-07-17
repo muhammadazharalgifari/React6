@@ -1,9 +1,17 @@
 import React from "react";
 import db from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FiUser } from "react-icons/fi";
+import { SlCalender } from "react-icons/sl";
+import { AiOutlineHome } from "react-icons/ai";
+import { MdPlace } from "react-icons/md";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { FiPhone } from "react-icons/fi";
 
 const BiodataPage = () => {
+  const navigate = useNavigate();
+
   function handleSubmit(e) {
     // stop form untuk merefresh page
     e.preventDefault();
@@ -17,15 +25,21 @@ const BiodataPage = () => {
     const phone = e.target.phone.value;
 
     // tampil di console
-    console.info(fullname, dob, pob, address, email, phone);
+    console.info(`
+      Fullname : ${fullname}
+      Date of Birth : ${dob}
+      Place of Birth : ${pob}
+      Address : ${address}
+      Email : ${email}
+      Phone Number : ${phone}`);
 
     const conf = window.confirm(`
-        Fullname : ${fullname},
-        Date of Birth : ${dob},
-        Place of Birth : ${pob},
-        Address : ${address},
-        Email : ${email},
-        Phone : ${phone} `);
+        Fullname        : ${fullname}
+        Date of Birth   : ${dob}
+        Place of Birth  : ${pob}
+        Address         : ${address}
+        Email           : ${email}
+        Phone Number    : ${phone} `);
 
     if (!conf) return;
 
@@ -38,6 +52,7 @@ const BiodataPage = () => {
       email,
       phone,
     }).then((res) => console.info("data berhasil masuk"));
+    navigate("/list");
   }
 
   // fungsi yang menerima parameter data
@@ -73,82 +88,96 @@ const BiodataPage = () => {
 
       {/* FORMULIR ISI BIODATA */}
       {/* start form */}
-      <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="fullname">Fullname</label>
+      <form className="w-full flex flex-col gap-6 mt-4" onSubmit={handleSubmit}>
+        <div className="w-full flex justify-center items-center gap-2">
+          <FiUser className="text-2xl" />
           <input
             type="text"
+            placeholder="Fullname"
             id="fullname"
             name="fullname"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="dob">Date of Birth</label>
+        <div className="w-full flex justify-center items-center gap-2">
+          <SlCalender className="text-2xl" />
           <input
             type="date"
+            placeholder="Date of Birth"
             id="dob"
             name="dob"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="pob">Place of Birth</label>
+        <div className="w-full flex justify-center items-center gap-2">
+          <AiOutlineHome className="text-2xl" />
           <input
             type="text"
+            placeholder="Place of Birth"
             id="pob"
             name="pob"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="address">Address</label>
+        <div className="w-full flex justify-center items-center gap-2">
+          <MdPlace className="text-2xl" />
           <input
             type="text"
+            placeholder="Address"
             id="address"
             name="address"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="email">Email</label>
+        <div className="w-full flex justify-center items-center gap-2">
+          <MdOutlineMailOutline className="text-2xl" />
           <input
             type="email"
+            placeholder="Email"
             id="email"
             name="email"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <div className="w-full flex flex-col gap-2">
-          <label htmlFor="phone">Phone Number</label>
+        <div className="w-full flex justify-center items-center gap-2">
+          <FiPhone className="text-2xl" />
           <input
             type="tel"
+            placeholder="Phone Number"
             id="phone"
             name="phone"
-            className="w-full h-12 rounded-md p-4 border border-black"
+            className="w-full h-12 rounded-md p-4 border border-gray-400 shadow-md"
             required
           />
         </div>
-        <button
-          type="submit"
-          className="h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-lg"
-        >
-          Confirm
-        </button>
-        <NavLink
-          to={"/"}
-          className={
-            "h-12 bg-black text-white flex justify-center items-center rounded-md shadow-lg"
-          }
-          role="button"
-        >
-          Back to Home
-        </NavLink>
+
+        <div className="flex flex-col gap-2">
+          {/* button untuk confirm */}
+          <button
+            type="submit"
+            className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-md"
+          >
+            Confirm
+          </button>
+          {/* button untuk confirm */}
+
+          {/* button untuk kembali ke halaman home */}
+          <NavLink
+            to={"/"}
+            className={
+              "h-12 bg-black text-white flex justify-center items-center rounded-md shadow-md"
+            }
+            role="button"
+          >
+            Back to Home
+          </NavLink>
+          {/* button untuk kembali ke halaman home */}
+        </div>
       </form>
       {/* end form */}
     </div>

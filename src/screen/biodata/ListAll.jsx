@@ -1,11 +1,14 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import db from "../../firebase";
 import { IoIosArrowBack } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { MdEditNote } from "react-icons/md";
 
 const ListAll = () => {
+  const navigate = useNavigate();
   const [allBiodata, setAllBiodata] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -24,12 +27,39 @@ const ListAll = () => {
     return result;
   }
 
+  // handle remove sesuai email
+  async function removeDocument(email) {
+    let docref = doc(db, `biodata/${email}`);
+    let removeDoc = deleteDoc(docref);
+    return removeDoc;
+  }
+
+  // handle remove list biodata
+  function handleRemoveList(email) {
+    const conf = window.confirm(`Anda Yakin Ingin Menghapus Data ${email} ?`);
+    if (!conf) return;
+
+    removeDocument(email).then((res) => {
+      window.location.reload();
+      console.log("Data Sudah Terhapus");
+    });
+  }
+
+  // handle update list
+  function handleUpdate(data) {
+    const { fullname, address, dob, pob, email, phone } = data;
+    navigate(
+      `/biodata/update?fullname=${fullname}&address=${address}&dob=${dob}&pob=${pob}&email=${email}&phone=${phone}`
+    );
+  }
+
   useEffect(() => {
     getAllBiodata().then((res) => {
       setAllBiodata((prev) => (prev = res));
     });
   }, []);
 
+  // fitur filter
   const filteredBiodata = allBiodata.filter((biodata) =>
     biodata.fullname.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -77,7 +107,7 @@ const ListAll = () => {
               <p>Fullname : {e.fullname} </p>
               <p>Email : {e.email} </p>
               <details>
-                <summary className="font-semibold my-2">Details</summary>
+                <summary className="font-semibold mb-2">Details</summary>
                 <div className="flex gap-2 flex-col text-center">
                   <p>Address : {e.address} </p>
                   <p>Date of Birth : {e.dob} </p>
@@ -85,10 +115,43 @@ const ListAll = () => {
                   <p>Phone Number : {e.phone} </p>
                 </div>
               </details>
+              <div className={"flex justify-end gap-4 text-2xl"}>
+                {/* icon untuk mengupdate data */}
+                <button
+                  onClick={() => {
+                    handleUpdate(e);
+                  }}
+                >
+                  <MdEditNote />
+                </button>
+                {/* icon untuk mengupdate data */}
+
+                {/* icon untuk menghapus data */}
+                <button
+                  onClick={() => {
+                    handleRemoveList(e.email);
+                  }}
+                >
+                  <RiDeleteBinLine />
+                </button>
+                {/* icon untuk menghapus data */}
+              </div>
             </div>
           ))}
         </div>
         {/* end card biodata */}
+
+        {/* button untuk selesai */}
+        <NavLink
+          to={"/finish"}
+          className={
+            "h-12 w-full my-4 bg-blue-600 hover:bg-blue-700 flex items-center justify-center font-thin rounded-md shadow-lg text-white"
+          }
+          role="button"
+        >
+          Done
+        </NavLink>
+        {/* button untuk selesai */}
       </div>
     </div>
   );
